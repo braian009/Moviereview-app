@@ -1,0 +1,10 @@
+<!-- templates/signup.html -->
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block content %}
+    <h2>Added {{ email }} to mailing list</h2>
+    <a href="{% url 'home' %}">Home</a>
+
+{% endblock content %}
