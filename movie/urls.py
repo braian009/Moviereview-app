@@ -1,13 +1,10 @@
 from django.urls import path
-from django.conf.urls.static import static
-from django.conf import settings
 
-from .views import HomePageView, AboutPageView, SignUpSampleView
+from .views import MovieListView, AboutPageView, SignUpSampleView, MovieDetailView
 
 urlpatterns = [
-    path('', HomePageView.as_view(), name='home'),
+    path('', MovieListView.as_view(), name='home'),
+    path('<int:pk>/', MovieDetailView.as_view(), name='movie_detail'),
     path('about/', AboutPageView.as_view(), name='about'),
     path('signup/', SignUpSampleView.as_view(), name='signup'),
-] + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)
+] 
