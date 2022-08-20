@@ -8,6 +8,6 @@ from .models import News
 class NewsListView(ListView):
     model = News
     context_object_name = 'news_list'
-    template_name = 'news.html'
+    template_name = 'news/news_list.html'
     ordering = ['-date']
     
