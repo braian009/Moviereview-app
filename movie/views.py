@@ -10,7 +10,7 @@ from .models import Movie, Review
 
 
 class MovieListView(ListView):
-    template_name = 'home.html'
+    template_name = 'movie/home.html'
     model = Movie
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class MovieListView(ListView):
 
 class MovieDetailView(DetailView):
     model = Movie
-    template_name = 'movie_detail.html'
+    template_name = 'movie/movie_detail.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class MovieDetailView(DetailView):
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     fields = ('review', 'watchAgain',)
-    template_name = 'review_create.html'
+    template_name = 'movie/review_create.html'
 
 
     def get_context_data(self, **kwargs):
@@ -61,7 +61,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 class ReviewUpdateView(LoginRequiredMixin, UpdateView):
     model = Review
     fields = ['review']
-    template_name = 'review_edit.html'
+    template_name = 'movie/review_edit.html'
     login_url = 'account_login'
 
 class ReviewDeleteView(LoginRequiredMixin, DeleteView):
