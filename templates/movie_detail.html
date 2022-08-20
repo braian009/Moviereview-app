@@ -17,7 +17,33 @@
                             <a href="{{ movie.url }}"
                                 class="btn btn-primary">Movie Link</a>
                         {% endif %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'review_create' movie.pk %}" class="btn btn-primary">Add review</a>
+                        {% endif %}
                     </p>
+                    <hr>
+                    <h3>Reviews</h3>
+                    <ul class="list-group">
+                        {% for review in reviews %}
+                            <li class="list-group-item pb-3 pt-3">
+                                <h5 class="card-title">
+                                    Review by {{ review.author.username }}
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    {{ review.date }}
+                                </h6>
+                                <p class="card-text">{{ review.review }}</p>
+                                {% if user.is_authenticated and user == review.author %}
+                                    <a href="{% url 'review_edit' review.pk %}" class="btn btn-primary me-2">Update</a>
+                                    <!-- <a href="{% url 'review_delete' review.pk %}" class="btn btn-danger">Delete</a> -->
+                                    <form action="{% url 'review_delete' review.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <input class="btn btn-danger mt-1" type="submit" value="Delete">
+                                    </form>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

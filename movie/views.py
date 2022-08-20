@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
-from .models import Movie
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .models import Movie, Review
 
 # Create your views here.
 
@@ -28,15 +31,50 @@ class MovieListView(ListView):
 class MovieDetailView(DetailView):
     model = Movie
     template_name = 'movie_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['movie'] = Movie.objects.get(id = self.kwargs['pk'])
+        movie = Movie.objects.get(id = self.kwargs['pk'])
+        context['reviews'] = Review.objects.filter(movie = movie)
+        return context
 
-class AboutPageView(TemplateView):
-    template_name = 'about.html'
 
-class SignUpSampleView(TemplateView):
-    template_name = 'signup.html'
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ('review', 'watchAgain',)
+    template_name = 'review_create.html'
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['email'] = self.request.GET.get('email')
+        context['movie'] = get_object_or_404(Movie, pk = self.kwargs['pk'])
         return context
+
+    def form_valid(self, form, **kwargs):
+        form.instance.author = self.request.user
+        form.instance.movie = get_object_or_404(Movie, pk = self.kwargs['pk'])
+        return super().form_valid(form)
+
+    login_url = 'account_login'
+
+class ReviewUpdateView(LoginRequiredMixin, UpdateView):
+    model = Review
+    fields = ['review']
+    template_name = 'review_edit.html'
+    login_url = 'account_login'
+
+class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+    model = Review
+
+    def get_success_url(self):
+        return reverse_lazy('movie_detail', args=[str(self.object.movie.id)])
+
+    login_url = 'account_login'
+
+    
+
+        
+
+    
 

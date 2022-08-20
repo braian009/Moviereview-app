@@ -32,9 +32,12 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto">
                     <a href="{% url 'news' %}" class="nav-link">News</a>
-                    <a href="#" class="nav-link">Log In</a>
-                    <a href="#" class="nav-link">Sign Up</a>
-
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'account_logout' %}" class="nav-link">Log Out ({{ user.username }})</a>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="nav-link">Log In</a>
+                        <a href="{% url 'account_signup' %}" class="nav-link">Sign Up</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

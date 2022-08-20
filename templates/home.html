@@ -4,16 +4,17 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-    <h1>Welcome to Home Page</h1>
-    <h2>This is the full home page.</h2>
+    <h1>Welcome!</h1>
     <form action="">
         <div class="mb-3">
           <label class="form-label">Search for Movie:</label>
           <input type="text" name="searchMovie" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>  
+        <button type="submit" class="btn btn-primary mb-2">Search</button>  
     </form>
-    <p>Searching for {{ searchTerm }}</p>
+    {% if searchTerm %}
+      <p>Searching for {{ searchTerm }}</p>
+    {% endif %}
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for movie in movies %}
         <div v-for="movie in movies" class="col">
